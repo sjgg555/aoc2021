@@ -219,14 +219,13 @@ count = 0
 digit_map = {}
 
 def count_matching_segments(item: str, target_num: str) -> int:
-    segment_count = 0
-    for letter in digit_map[target_num]:
-        if letter in item:
-            segment_count+=1
-    return segment_count
+    return sum([1 for i in digit_map[target_num] if i in item])
 
 def complete_match(item: str, key: str) -> bool:
     return count_matching_segments(item, key) == len(digit_map[key])
+
+def str_sort(key):
+    return ''.join(sorted(key))
 
 def get_key(item: str) -> str:
     key = "None"
@@ -250,30 +249,22 @@ def get_key(item: str) -> str:
             key = "0"
     return key
 
-def str_sort(key):
-    return ''.join(sorted(key))
-
 def get_fixed_keys(input):
     for item in input:
         key = None
-        if   len(item) == 7: 
-            key = "8"
-        elif len(item) == 4: 
-            key = "4"
-        elif len(item) == 3:
-            key = "7"
-        elif len(item) == 2: 
-            key = "1"
-        else:
-            continue
-        digit_map[key] = str_sort(item)
+        if   len(item) == 7: key = "8"
+        elif len(item) == 4: key = "4"
+        elif len(item) == 3: key = "7"
+        elif len(item) == 2: key = "1"
+        else: continue
+        digit_map[key] = item
 
-def get_difficult_keys(input):
+def get_difficult_keys(input: list) -> None:
     for item in input:
         key = get_key(item)
-        digit_map[key] = str_sort(item)
+        digit_map[key] = item
 
-def split_inputs(input:list) -> list:
+def split_inputs(input: list) -> list:
     fixed = []
     special = []
     for item in input:
@@ -290,6 +281,7 @@ total = 0
 for input, output in data:
 
     input.sort(key=len)
+    input = [str_sort(item) for item in input]
     output = [str_sort(item) for item in output]
 
     fixed, special = split_inputs(input)
