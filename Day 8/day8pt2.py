@@ -249,7 +249,7 @@ def get_key(item: str) -> str:
             key = "0"
     return key
 
-def get_fixed_keys(input):
+def get_fixed_keys(input: list) -> None:
     for item in input:
         key = None
         if   len(item) == 7: key = "8"
